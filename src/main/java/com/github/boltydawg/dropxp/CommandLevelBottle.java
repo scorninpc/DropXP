@@ -1,5 +1,6 @@
 package com.github.boltydawg.dropxp;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -16,18 +17,38 @@ import org.bukkit.entity.Player;
 public class CommandLevelBottle implements CommandExecutor{
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		
-		if(!(sender instanceof Player)) return false;
-		Player player = (Player)sender;
+
+		Player player, executer;
+
+		//checks if sender is not a player (console)
+		if(!(sender instanceof Player)){
+			//checks if is passing player to get the bottle
+			if (args.length < 2) {
+				sender.sendMessage(ChatColor.DARK_AQUA + "[DropXP] " + ChatColor.BLUE + "From console, you need to inform the player!");
+				return true;
+			}
+		}
+
+		//checks if player is informed
+		if (args.length >= 2) {
+			player = Bukkit.getPlayer(args[1]);
+			if(player == null) {
+				sender.sendMessage(ChatColor.DARK_AQUA + "[DropXP] " + ChatColor.BLUE + "Player not found!");
+				return true;
+			}
+		}
+		else {
+			player = (Player)sender;
+		}
 		
 		//checks if their inventory is full
 		if(player.getInventory().firstEmpty() == -1) {
-			player.sendMessage(ChatColor.DARK_AQUA + "[DropXP] " + ChatColor.BLUE + "Your inventory is full!");
+			sender.sendMessage(ChatColor.DARK_AQUA + "[DropXP] " + ChatColor.BLUE + "Player inventory is full!");
 			return true;
 		}
 		
 		//checks if they've entered their arguments correctly
-		else if(args != null && args.length == 1) {
+		else if(args != null && args.length >= 1) {
 			int xp;
 			//checks if they've entered an integer, and gives them the bottle if it is
 			try {

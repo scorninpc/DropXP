@@ -11,7 +11,7 @@ commands:
     permission: dropxp.drop
   droplvl:
      description: Creates a leveled xp bottle
-     usage: /droplvl <number of levels>
+     usage: /droplvl <number of levels> [<player>]
      permission: dropxp.lvl
 permissions:
    dropxp.*:
